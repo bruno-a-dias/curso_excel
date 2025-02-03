@@ -1,6 +1,6 @@
 # 📊 Curso de Excel - em construção.
 
-## ![Clique AQUI e visualize a página web.](https://bruno-a-dias.github.io/curso_excel/)
+
 
 ## 🌟 Sobre o Projeto
 Bem-vindo ao **Curso de Excel**, sua porta de entrada para dominar planilhas, gráficos e funções avançadas! Esta landing page foi cuidadosamente projetada para oferecer uma experiência moderna, interativa e responsiva, garantindo que você tenha acesso rápido e intuitivo a todos os recursos do curso.

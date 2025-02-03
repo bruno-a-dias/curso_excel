@@ -1,8 +1,191 @@
-// Inicializa o AOS
+// Inicializa o AOS (Animate On Scroll)
 AOS.init({
     duration: 1000,
     once: true
 });
+
+// Dados do Quiz
+const quizData = {
+    basico: [
+        {
+            question: "Qual é a função usada para somar valores no Excel?",
+            options: ["=SOMA()", "=MÉDIA()", "=CONTAR()", "=MULT()"],
+            answer: "=SOMA()"
+        },
+        {
+            question: "Como você formata uma célula para exibir moeda?",
+            options: ["Formatar > Moeda", "Formatar > Data", "Formatar > Texto", "Formatar > Número"],
+            answer: "Formatar > Moeda"
+        },
+        {
+            question: "Qual é o atalho para salvar um arquivo no Excel?",
+            options: ["Ctrl + S", "Ctrl + P", "Ctrl + Z", "Ctrl + C"],
+            answer: "Ctrl + S"
+        },
+        {
+            question: "O que significa a função =MÉDIA()?",
+            options: ["Calcula a soma dos valores", "Calcula a média dos valores", "Conta o número de células", "Multiplica os valores"],
+            answer: "Calcula a média dos valores"
+        },
+        {
+            question: "Como você insere um gráfico no Excel?",
+            options: ["Inserir > Gráfico", "Dados > Gráfico", "Fórmulas > Gráfico", "Exibição > Gráfico"],
+            answer: "Inserir > Gráfico"
+        },
+        {
+            question: "Qual é a extensão padrão de um arquivo do Excel?",
+            options: [".xlsx", ".docx", ".pptx", ".pdf"],
+            answer: ".xlsx"
+        },
+        {
+            question: "O que faz a função =CONTAR()?",
+            options: ["Conta o número de células com texto", "Conta o número de células vazias", "Conta o número de células com números", "Conta o número de caracteres"],
+            answer: "Conta o número de células com números"
+        },
+        {
+            question: "Como você aplica filtros em uma tabela?",
+            options: ["Dados > Filtro", "Inserir > Filtro", "Fórmulas > Filtro", "Exibição > Filtro"],
+            answer: "Dados > Filtro"
+        },
+        {
+            question: "Qual é a função usada para calcular o maior valor em um intervalo?",
+            options: ["=MÁXIMO()", "=MÍNIMO()", "=SOMA()", "=MÉDIA()"],
+            answer: "=MÁXIMO()"
+        },
+        {
+            question: "Como você copia uma fórmula para várias células?",
+            options: ["Arrastando o canto inferior direito da célula", "Copiando e colando manualmente", "Usando Ctrl + C e Ctrl + V", "Usando Ctrl + X e Ctrl + V"],
+            answer: "Arrastando o canto inferior direito da célula"
+        }
+    ],
+    intermediario: [
+        {
+            question: "Qual é a função usada para buscar valores em uma tabela?",
+            options: ["=PROCV()", "=SE()", "=SOMA()", "=CONTAR()"],
+            answer: "=PROCV()"
+        },
+        {
+            question: "O que significa a função =SE()?",
+            options: ["Verifica uma condição e retorna um valor", "Soma valores", "Calcula a média", "Conta células"],
+            answer: "Verifica uma condição e retorna um valor"
+        },
+        {
+            question: "Como você cria uma Tabela Dinâmica?",
+            options: ["Inserir > Tabela Dinâmica", "Dados > Tabela Dinâmica", "Fórmulas > Tabela Dinâmica", "Exibição > Tabela Dinâmica"],
+            answer: "Inserir > Tabela Dinâmica"
+        },
+        {
+            question: "Qual é a função usada para concatenar textos?",
+            options: ["=CONCATENAR()", "=SOMA()", "=PROCV()", "=SE()"],
+            answer: "=CONCATENAR()"
+        },
+        {
+            question: "O que faz a função =ÍNDICE()?",
+            options: ["Retorna o valor de uma célula específica", "Calcula a média", "Conta células", "Busca valores em tabelas"],
+            answer: "Retorna o valor de uma célula específica"
+        },
+        {
+            question: "Como você protege uma planilha no Excel?",
+            options: ["Revisão > Proteger Planilha", "Dados > Proteger Planilha", "Inserir > Proteger Planilha", "Exibição > Proteger Planilha"],
+            answer: "Revisão > Proteger Planilha"
+        },
+        {
+            question: "Qual é a função usada para arredondar números?",
+            options: ["=ARRED()", "=SOMA()", "=MÉDIA()", "=CONTAR()"],
+            answer: "=ARRED()"
+        },
+        {
+            question: "Como você remove duplicatas de uma lista?",
+            options: ["Dados > Remover Duplicatas", "Inserir > Remover Duplicatas", "Fórmulas > Remover Duplicatas", "Exibição > Remover Duplicatas"],
+            answer: "Dados > Remover Duplicatas"
+        },
+        {
+            question: "Qual é a função usada para calcular o desvio padrão?",
+            options: ["=DESVPAD()", "=MÉDIA()", "=SOMA()", "=CONTAR()"],
+            answer: "=DESVPAD()"
+        },
+        {
+            question: "Como você cria uma macro no Excel?",
+            options: ["Desenvolvedor > Gravar Macro", "Inserir > Macro", "Dados > Macro", "Exibição > Macro"],
+            answer: "Desenvolvedor > Gravar Macro"
+        }
+    ]
+};
+
+// Variáveis Globais
+let currentQuiz = [];
+let currentQuestionIndex = 0;
+let score = 0;
+
+// Função para Iniciar o Quiz
+function startQuiz(level) {
+    currentQuiz = quizData[level];
+    currentQuestionIndex = 0;
+    score = 0;
+    document.getElementById("quizContainer").style.display = "block";
+    document.getElementById("quizTitle").textContent = level === "basico" ? "Quiz Básico" : "Quiz Intermediário";
+    showQuestion();
+    document.getElementById("nextQuestionBtn").style.display = "inline-block";
+    document.getElementById("submitQuizBtn").style.display = "none";
+}
+
+// Função para Exibir a Pergunta Atual
+function showQuestion() {
+    const questionData = currentQuiz[currentQuestionIndex];
+    const quizQuestionsDiv = document.getElementById("quizQuestions");
+    quizQuestionsDiv.innerHTML = `
+        <div class="quiz-question">
+            <p>${currentQuestionIndex + 1}. ${questionData.question}</p>
+            <div class="quiz-options">
+                ${questionData.options.map(option => `
+                    <label>
+                        <input type="radio" name="quizOption" value="${option}">
+                        ${option}
+                    </label>
+                `).join("")}
+            </div>
+        </div>
+    `;
+    if (currentQuestionIndex === currentQuiz.length - 1) {
+        document.getElementById("nextQuestionBtn").style.display = "none";
+        document.getElementById("submitQuizBtn").style.display = "inline-block";
+    } else {
+        document.getElementById("nextQuestionBtn").style.display = "inline-block";
+        document.getElementById("submitQuizBtn").style.display = "none";
+    }
+}
+
+// Função para Avançar para a Próxima Pergunta
+function nextQuestion() {
+    const selectedOption = document.querySelector('input[name="quizOption"]:checked');
+    if (!selectedOption) {
+        alert("Por favor, selecione uma resposta.");
+        return;
+    }
+    if (selectedOption.value === currentQuiz[currentQuestionIndex].answer) {
+        score++;
+    }
+    currentQuestionIndex++;
+    if (currentQuestionIndex < currentQuiz.length) {
+        showQuestion();
+    }
+}
+
+// Função para Enviar o Quiz
+function submitQuiz() {
+    const selectedOption = document.querySelector('input[name="quizOption"]:checked');
+    if (!selectedOption) {
+        alert("Por favor, selecione uma resposta.");
+        return;
+    }
+    if (selectedOption.value === currentQuiz[currentQuestionIndex].answer) {
+        score++;
+    }
+    document.getElementById("quizQuestions").innerHTML = "";
+    document.getElementById("quizResult").textContent = `Você acertou ${score} de ${currentQuiz.length} perguntas!`;
+    document.getElementById("nextQuestionBtn").style.display = "none";
+    document.getElementById("submitQuizBtn").style.display = "none";
+}
 
 // Alternar menu lateral em dispositivos móveis
 function toggleMenu() {
@@ -82,123 +265,44 @@ const myChart = new Chart(ctx, {
     }
 });
 
-// Sistema de avaliação
-document.querySelectorAll('.star').forEach(star => {
-    star.addEventListener('click', function () {
-        const rating = this.getAttribute('data-value');
-        document.getElementById('ratingMessage').textContent = `Você avaliou com ${rating} estrela(s)!`;
+// Função para Alternar Tema Claro/Escuro
+function toggleTheme() {
+    const body = document.body;
+    const themeIcon = document.getElementById("themeIcon");
 
-        document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+    // Alternar a classe 'dark-mode' no body
+    body.classList.toggle("dark-mode");
 
-        for (let i = 0; i < rating; i++) {
-            document.querySelectorAll('.star')[i].classList.add('active');
-        }
-    });
-
-    star.addEventListener('mouseover', function () {
-        const value = this.getAttribute('data-value');
-        document.querySelectorAll('.star').forEach((s, index) => {
-            if (index < value) {
-                s.style.color = '#ffcc00';
-            } else {
-                s.style.color = '#ccc';
-            }
-        });
-    });
-
-    star.addEventListener('mouseout', function () {
-        document.querySelectorAll('.star').forEach(s => {
-            if (s.classList.contains('active')) {
-                s.style.color = '#ffcc00';
-            } else {
-                s.style.color = '#ccc';
-            }
-        });
-    });
-});
-
-// Sistema de comentários
-document.getElementById('commentForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const name = document.getElementById('commentName').value;
-    const text = document.getElementById('commentText').value;
-
-    if (name && text) {
-        const commentDiv = document.createElement('div');
-        commentDiv.classList.add('comment');
-        commentDiv.innerHTML = `<strong>${name}</strong>: ${text}`;
-        document.getElementById('comments').appendChild(commentDiv);
-
-        this.reset();
+    // Alterar o ícone com base no tema atual
+    if (body.classList.contains("dark-mode")) {
+        themeIcon.classList.remove("fa-moon");
+        themeIcon.classList.add("fa-sun");
     } else {
-        alert('Por favor, preencha todos os campos.');
+        themeIcon.classList.remove("fa-sun");
+        themeIcon.classList.add("fa-moon");
     }
-});
 
-// Widget de chat
-document.getElementById('openChat').addEventListener('click', function () {
-    document.getElementById('chatWidget').style.display = 'flex';
-});
-
-document.getElementById('closeChat').addEventListener('click', function () {
-    document.getElementById('chatWidget').style.display = 'none';
-});
-
-document.getElementById('chatForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const message = document.getElementById('chatInput').value;
-
-    if (message) {
-        const chatMessages = document.getElementById('chatMessages');
-        const messageDiv = document.createElement('div');
-        messageDiv.textContent = `Você: ${message}`;
-        chatMessages.appendChild(messageDiv);
-
-        document.getElementById('chatInput').value = '';
-
-        setTimeout(() => {
-            const responseDiv = document.createElement('div');
-            responseDiv.textContent = "Suporte: Obrigado! Como posso ajudar?";
-            chatMessages.appendChild(responseDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 100        }, 1000);
-    }
-});
-
-// Botão "Voltar ao Topo"
-window.addEventListener('scroll', function () {
-    const backToTopButton = document.getElementById('backToTop');
-    if (window.scrollY > 300) {
-        backToTopButton.style.display = 'block';
+    // Salvar a preferência do usuário no localStorage
+    if (body.classList.contains("dark-mode")) {
+        localStorage.setItem("theme", "dark");
     } else {
-        backToTopButton.style.display = 'none';
+        localStorage.setItem("theme", "light");
     }
-});
+}
 
-document.getElementById('backToTop').addEventListener('click', function () {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
+// Verificar a preferência do usuário ao carregar a página
+document.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("theme");
+    const body = document.body;
+    const themeIcon = document.getElementById("themeIcon");
 
-// Particles.js
-particlesJS("particles-js", {
-    particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
-        color: { value: "#ffffff" },
-        shape: { type: "circle", stroke: { width: 0, color: "#000000" } },
-        opacity: { value: 0.5, random: false, anim: { enable: false } },
-        size: { value: 3, random: true, anim: { enable: false } },
-        line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
-        move: { enable: true, speed: 2, direction: "none", random: false, straight: false, out_mode: "out" }
-    },
-    interactivity: {
-        detect_on: "canvas",
-        events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" } },
-        modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
-    },
-    retina_detect: true
+    if (savedTheme === "dark") {
+        body.classList.add("dark-mode");
+        themeIcon.classList.remove("fa-moon");
+        themeIcon.classList.add("fa-sun");
+    } else {
+        body.classList.remove("dark-mode");
+        themeIcon.classList.remove("fa-sun");
+        themeIcon.classList.add("fa-moon");
+    }
 });
